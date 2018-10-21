@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         document.getElementById("action").innerText = swipeDirection;
                         console.log(swipeDirection);
                         previousSwipeDirection = swipeDirection;
+
+                        swiped(swipeDirection);
                     }
                 }
             }
@@ -46,3 +48,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+/*
+This method needs to be 'aware' of who the operator is so that it knows what item they have
+ */
+function swiped(direction) {
+    if (direction === "right") {
+        // TODO: check user has no items at this stage
+        document.getElementById("in-progress").insertAdjacentElement("afterbegin", document.getElementById("todo").firstElementChild);
+    } else if (direction === "left") {
+        // TODO: check user has item in progress
+        document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("in-progress").firstElementChild);
+    } else if (direction === "inwards") {
+        // TODO: remove user item from in-progress
+    }
+}

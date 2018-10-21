@@ -1,0 +1,22 @@
+#order-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    height: 60vh;
+    margin: 1em;
+}
+
+#order-view div {
+    width: 45%;
+    border: 0.2em solid black;
+}
+
+#order-view div h2 {
+    margin: 0.2em 0.5em;
+    text-align: center;
+}
+
+.order-item {
+    margin: 0.4em;
+}

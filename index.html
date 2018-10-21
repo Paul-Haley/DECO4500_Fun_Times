@@ -3,11 +3,41 @@
     <head>
         <meta charset="utf-8">
         <title>Fun Times Leap Motion Test</title>
-        <!--<link rel="stylesheet" href="style.css">-->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <h1>Last Action</h1>
+        <header>
+            <h1>Order Management system</h1>
+            <p>By Fun Times for DECO4500</p>
+        </header>
+
+        <h1>Detected Last Action</h1>
         <span id = "action">None</span>
+
+        <section id="order-view">
+            <div>
+                <h2>To Cook</h2>
+                <ul id="todo">
+                    <li class="order-item">
+                        <p>Parmi (X 6)</p>
+                        <ul>
+                            <li>
+                                Vegetables X 2
+                            </li>
+                            <li>
+                                Chips & Salad X 4
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>In Progress</h2>
+                <ul id="in-progress">
+                    <li class="order-item">Chips X 4</li>
+                </ul>
+            </div>
+        </section>
     </body>
     <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
     <script src = "script.js"></script>
