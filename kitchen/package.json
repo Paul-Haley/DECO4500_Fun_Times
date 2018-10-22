@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "socket.io": "^2.1.1"
+    "gridstack": "^0.4.0",
+    "jquery": "^3.3.1",
+    "jquery-ui": "^1.12.1",
+    "lodash": "^4.17.11"
   }
 }

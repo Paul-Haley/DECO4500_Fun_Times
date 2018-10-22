@@ -1,6 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("page loaded");
 
+    document.getElementById("chef").onchange  = function() {
+        chef = document.getElementById("chef").valueOf();
+    }
+
+    // setup the grid stack
+    // $(function () {
+    //     $('.grid-stack').gridstack();
+    // });
+
     // Express HTTP Server
     const express = require('express')();
     const port = 80;
@@ -60,56 +69,93 @@ document.addEventListener("DOMContentLoaded", function() {
 This method needs to be 'aware' of who the operator is so that it knows what item they have
  */
 function swiped(direction) {
-    if (direction === "right") {
+    if (direction === "right") { // Taking item
         // TODO: check user has no items at this stage
-        document.getElementById("in-progress").insertAdjacentElement("afterbegin", document.getElementById("todo").firstElementChild);
-    } else if (direction === "left") {
+        //document.getElementById("in-progress").insertAdjacentElement("afterbegin", document.getElementById("todo").firstElementChild);
+
+        if (kitchenState.doing[chef].item) {
+            // TODO: already have item, remind them
+        }
+
+        // shift makes array function as queue in O(n) time
+        let orderItem = kitchenState.todo.shift();
+        kitchenState.doing[chef] = orderItem;
+        updateOrders(orderItem, "doing");
+
+    } else if (direction === "left") { // Reject item/undo complete
         // TODO: check user has item in progress
-        document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("in-progress").firstElementChild);
-    } else if (direction === "inwards") {
+        //document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("in-progress").firstElementChild);
+
+        if (!kitchenState.doing[chef].item) {
+            // TODO: don't have item, remind them
+        }
+
+        let orderItem = kitchenState.doing[chef];
+        kitchenState.todo.unshift(orderItem);
+        kitchenState.doing[chef] = noItem;
+        updateOrders(orderItem, "todo");
+
+    } else if (direction === "inwards") { // complete doing item
         // TODO: update display
         // TODO: error handling (undo hand action)
-        if (!kitchenState.doing[chef].item) {
-            let countDone = kitchenState.doing[chef]
-            kitchenState.done[chef] = kitchenState.doing[chef];
-            kitchenState.doing[chef] = noItem;
+        if (kitchenState.doing[chef].item) {
+            // TODO: No doing item, remind them
+        }
 
-            let i = 0;
-            while (countDone > 0 && i < orders.length) {
-                for (let j = 0; i < orders[i].order_items.length; ++i) {
-                    if (orders[i].order_items[j].state === "doing" && orders[i].order_items[j].item === kitchenState.done[chef].item) {
-                        // item in progress found and adjusting quantity
-                        // FIXME: This assumes that order quantities are not split, e.g. 4 parmis become two tasks of 2
-                        countDone -= orders[i].order_items[j].qty;
-                        orders[i].order_items[j].state = "done";
-                        if (countDone <= 0) break;
-                    }
-                }
+        //let countDone = kitchenState.doing[chef]
+        let orderItem = kitchenState.doing[chef];
+        kitchenState.done[chef] = orderItem;
+        kitchenState.doing[chef] = noItem;
+        updateOrders(orderItem, "done");
+
+        // let i = 0;
+        // while (countDone > 0 && i < orders.length) {
+        //     for (let j = 0; i < orders[i].order_items.length; ++i) {
+        //         if (orders[i].order_items[j].state === "doing" && orders[i].order_items[j].item === kitchenState.done[chef].item) {
+        //             // item in progress found and adjusting quantity
+        //             // FIXME: This assumes that order quantities are not split, e.g. 4 parmis become two tasks of 2
+        //             countDone -= orders[i].order_items[j].qty;
+        //             orders[i].order_items[j].state = "done";
+        //             if (countDone <= 0) break;
+        //         }
+        //     }
+        // }
+    }
+}
+
+// Only updates the orders object, not kitchen state
+function updateOrders(orderItem, to) {
+    for (let i in orderItem.ids) {
+        for (let j in orders[i - 1].order_items.length) { // MATLAB indexing
+            if (orders[i - 1].order_items[j].item === orderItem.item) {
+                orders[i - 1].order_items[j].state = to;
             }
         }
     }
 }
 
-
+// Awais is our primary chef, Ben can join in too! Fun Times!
 let chef = "awais";
 
 const noItem = {
     "item": null,
-    "qty": 0
+    "qty": 0,
+    "ids": []
 }
 
+// Indexes are MATLAB crap, thanks Todd
 let orders = [{
 
         "order_id": 1,
         "order_items": [{
                 "item": "salad",
                 "qty": 5,
-                "state": "todo"
+                "state": "done"
             },
             {
                 "item": "steak",
-                "qty": 5,
-                "state": "done"
+                "qty": 2,
+                "state": "doing"
             }
         ]
     },
@@ -117,12 +163,12 @@ let orders = [{
         "order_id": 2,
         "order_items": [{
                 "item": "chips",
-                "qty": 5,
+                "qty": 4,
                 "state": "todo"
             },
             {
                 "item": "steak",
-                "qty": 10,
+                "qty": 3,
                 "state": "doing"
             }
         ]
@@ -130,25 +176,35 @@ let orders = [{
 ];
 
 let kitchenState = {
-    "todo": [],
+    "todo": [
+        {
+            "item": "chips",
+            "qty": 4,
+            "ids": [2]
+        }
+    ],
     "doing": {
         "awais": {
-            "item": null,
-            "qty": 0
+            "item": "steaks",
+            "qty": 5,
+            "ids": [1,2]
         },
         "ben": {
             "item": null,
-            "qty": 0
+            "qty": 0,
+            "ids": []
         }
     },
     "done": {
         "awais": {
             "item": null,
-            "qty": 0
+            "qty": 0,
+            "ids": []
         },
         "ben": {
-            "item": null,
-            "qty": 0
+            "item": "salad",
+            "qty": 5,
+            "ids": [1]
         }
     }
 };

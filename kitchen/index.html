@@ -3,7 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>Fun Times Leap Motion Test</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.4.0/gridstack.min.css">
+    -->
 </head>
 <body>
 <header>
@@ -27,10 +32,26 @@
     </nav>
 </header>
 
+<!--
+<div class="grid-stack">
+    <div class="grid-stack-item"
+         data-gs-x="0" data-gs-y="0"
+         data-gs-width="4" data-gs-height="2">
+        <div class="grid-stack-item-content"></div>
+    </div>
+    <div class="grid-stack-item"
+         data-gs-x="4" data-gs-y="0"
+         data-gs-width="4" data-gs-height="4">
+        <div class="grid-stack-item-content"></div>
+    </div>
+</div>
+-->
+
 <section id="order-view">
     <div>
         <h2>To Cook</h2>
         <ul id="todo">
+            <!--
             <li class="order-item">
                 <p>Parmi (X 6)</p>
                 <ul>
@@ -42,16 +63,26 @@
                     </li>
                 </ul>
             </li>
+            -->
         </ul>
     </div>
     <div>
         <h2>In Progress</h2>
         <ul id="in-progress">
+            <!--
             <li class="order-item">Chips X 4</li>
+            -->
         </ul>
     </div>
 </section>
+
 </body>
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+-->
+
 <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
+
 <script src = "script.js"></script>
+
 </html>
