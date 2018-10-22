@@ -219,7 +219,7 @@ function render() {
 
     for (let i in kitchenState.doing) {
         if (kitchenState.doing[i].item) {
-            document.getElementById("doing").insertAdjacentHTML("afterbegin", "<li class='order-item'>" + kitchenState.doing[i].item + " X " + kitchenState.doing[i].qty + "</li>");
+            document.getElementById("doing").insertAdjacentHTML("afterbegin", "<li class='order-item'>" + kitchenState.doing[i].item + " X " + kitchenState.doing[i].qty + "<ul><li>" + i + "</li></ul></li>");
         }
     }
 }
