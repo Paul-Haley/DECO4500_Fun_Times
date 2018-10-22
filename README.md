@@ -4,7 +4,7 @@ Making the diner parallel
 
 
 JSON structures:
-
+```
 Full system state:
 {
     orders: [
@@ -40,7 +40,9 @@ Full system state:
         }
     ]
 }
+```
 
+```
 Kitchen State:
 {
     todo: {
@@ -64,7 +66,9 @@ Kitchen State:
         }
     }
 }
+```
 
+```
 Server State:
 {
     orders: [
@@ -78,3 +82,4 @@ Server State:
         },
     ]
 }
+```
