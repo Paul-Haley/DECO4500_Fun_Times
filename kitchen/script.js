@@ -64,7 +64,62 @@ function swiped(direction) {
     }
 }
 
-let orders = [];
+let orders = [
+    {
+        "order_id": 1,
+        "order_items": [
+            {
+                "item": "salad",
+                "qty": 5,
+                "state": "todo"
+            },
+            {
+                "item": "steak",
+                "qty": 5,
+                "state": "done"
+            }
+        ]
+    },
+    {
+        "order_id": 2,
+        "order_items": [
+            {
+                "item": "chips",
+                "qty": 5,
+                "state": "todo"
+            },
+            {
+                "item": "steak",
+                "qty": 10,
+                "state": "doing"
+            }
+        ]
+    }];
+
+let kitchenState = {
+    "todo": [],
+    "doing": {
+        "awais": {
+            "item": null,
+            "qty": 0
+        },
+        "ben": {
+            "item": null,
+            "qty": 0
+        }
+    },
+    "done": {
+        "awais": {
+            "item": null,
+            "qty": 0
+        },
+        "ben": {
+            "item": null,
+            "qty": 0
+        }
+    }
+};
+
 
 
 
