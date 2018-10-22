@@ -1,6 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("page loaded");
-    const socket = require("socket.io")("http://192.168.0.2:9000");
+
+    // Express HTTP Server
+    const express = require('express')();
+    const port = 80;
+    express.listen(port);
+    // send all orders
+    express.get('/', (req, res) => res.json(orders));
 
     // Setup Leap loop with frame callback function
     const controllerOptions = { enableGestures: true };
@@ -63,7 +69,8 @@ function swiped(direction) {
     } else if (direction === "inwards") {
         // TODO: remove user item from in-progress
     }
-    io.emit('some event', { for: 'everyone' });
+
+    express.get('/', (req, res) => res.json({"values": 3}));
 }
 
 
