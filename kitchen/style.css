@@ -1,9 +1,40 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+header h1 {
+    margin: 0;
+    padding: 0;
+}
+
+header nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    width: 40%;
+}
+
+header nav select {
+    margin-left: 2em;
+    margin-right: 5em;
+}
+
 #order-view {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: nowrap;
-    height: 60vh;
+    min-height: 60vh;
+    height: 70vh;
+    max-height: 80vh;
     margin: 1em;
 }
 

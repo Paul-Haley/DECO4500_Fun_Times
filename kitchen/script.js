@@ -3,24 +3,24 @@ document.addEventListener("DOMContentLoaded", function() {
     const socket = require("socket.io")("http://192.168.0.2:9000");
 
     // Setup Leap loop with frame callback function
-    var controllerOptions = { enableGestures: true };
-    var previousSwipeDirection = "none";
+    const controllerOptions = { enableGestures: true };
+    let previousSwipeDirection = "none";
 
     Leap.loop(controllerOptions, function(frame) {
 
         if (frame.gestures.length > 0) {
 
-            for (var i = 0; i < frame.gestures.length; i++) {
-                var gesture = frame.gestures[i];
+            for (let i = 0; i < frame.gestures.length; i++) {
+                const gesture = frame.gestures[i];
                 if (gesture.type === "swipe") {
                     //console.log(gesture.direction);
 
                     // Classify swipe as either horizontal or vertical
                     // https://stackoverflow.com/questions/18018642/detecting-swipe-gesture-direction-with-leap-motion
-                    var isHorizontal = Math.abs(gesture.direction[0]) * 0.4 > Math.abs(gesture.direction[1]);
+                    const isHorizontal = Math.abs(gesture.direction[0]) * 0.4 > Math.abs(gesture.direction[1]);
 
                     //Classify as right-left or up-down
-                    var swipeDirection = "other";
+                    let swipeDirection = "other";
                     if (isHorizontal) {
                         if (gesture.direction[0] > 0) {
                             swipeDirection = "right";
@@ -65,3 +65,57 @@ function swiped(direction) {
     }
     io.emit('some event', { for: 'everyone' });
 }
+
+let orders = [{
+        "order_id": 1,
+        "order_items": [{
+                "item": "salad",
+                "qty": 5,
+                "state": "todo"
+            },
+            {
+                "item": "steak",
+                "qty": 5,
+                "state": "done"
+            }
+        ]
+    },
+    {
+        "order_id": 2,
+        "order_items": [{
+                "item": "chips",
+                "qty": 5,
+                "state": "todo"
+            },
+            {
+                "item": "steak",
+                "qty": 10,
+                "state": "doing"
+            }
+        ]
+    }
+];
+
+let kitchenState = {
+    "todo": [],
+    "doing": {
+        "awais": {
+            "item": null,
+            "qty": 0
+        },
+        "ben": {
+            "item": null,
+            "qty": 0
+        }
+    },
+    "done": {
+        "awais": {
+            "item": null,
+            "qty": 0
+        },
+        "ben": {
+            "item": null,
+            "qty": 0
+        }
+    }
+};

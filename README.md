@@ -4,67 +4,79 @@ Making the diner parallel
 
 
 JSON structures:
-
-Full system state:
-{
-    orders: [
-        {
-            order_id: 2,
-            order_items: {
-                {
-                    "name": "chips",
-                    "quantity": 5,
-                    "state": "todo"
-                },
-                {
-                    "name": "steak",
-                    "quantity": 10,
-                    "state": "doing"
-                }
+```
+Full system state: [
+    {
+        "order_id": 1,
+        "order_items": [
+            {
+                "item": "salad",
+                "qty": 5,
+                "state": "todo"
+            },
+            {
+                "item": "steak",
+                "qty": 5,
+                "state": "done"
             }
-        },
-        {
-            order_id: 1,
-            order_items: [
-                {
-                    "name": "salad",
-                    "quantity": 5,
-                    "state": "todo"
-                },
-                {
-                    "name": "steak",
-                    "quantity": 5,
-                    "state": "done"
-                }
-            ]
+        ]
+    },
+    {
+        "order_id": 2,
+        "order_items": {
+            {
+                "item": "chips",
+                "qty": 5,
+                "state": "todo"
+            },
+            {
+                "item": "steak",
+                "qty": 10,
+                "state": "doing"
+            }
         }
-    ]
-}
+    }
+]
 
+```
+
+```
 Kitchen State:
 {
-    todo: {
-        "chips": 5,
-        "steak": 10
-    },
-    doing: {
-        "ben": {
-            "salad": 5
+    "todo": [
+        {
+            "item": "chips",
+            "qty": 5
         },
+        {
+            "item": "steak",
+            "qty": 10
+        }
+    ],
+    "doing": {
         "awais": {
-            "chips": 5
+            "item": "chips",
+            "qty": 5
+        },
+        "ben": {
+            "item": "salad",
+            "qty": 5
         }
     },
-    done: {
-        "ben": {
-            "steak": 3
-        },
+    "done": {
         "awais": {
-            "salad": 1
+           "item": "steak",
+            "qty": 3
+        },
+        "ben": {
+            "item": "salad",
+            "qty": 1
         }
     }
 }
+```
 
+```
 Server State:
 {
     orders: [
@@ -78,3 +90,4 @@ Server State:
         },
     ]
 }
+```
