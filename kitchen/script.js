@@ -67,14 +67,36 @@ function swiped(direction) {
         // TODO: check user has item in progress
         document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("in-progress").firstElementChild);
     } else if (direction === "inwards") {
-        // TODO: remove user item from in-progress
-    }
+        // TODO: update display
+        // TODO: error handling (undo hand action)
+        if (!kitchenState.doing[chef].item) {
+            let countDone = kitchenState.doing[chef]
+            kitchenState.done[chef] = kitchenState.doing[chef];
+            kitchenState.doing[chef] = noItem;
 
-    express.get('/', (req, res) => res.json({"values": 3}));
+            let i = 0;
+            while (countDone > 0 && i < orders.length) {
+                for (let j = 0; i < orders[i].order_items.length; ++i) {
+                    if (orders[i].order_items[j].state === "doing" && orders[i].order_items[j].item === kitchenState.done[chef].item) {
+                        // item in progress found and adjusting quantity
+                        // FIXME: This assumes that order quantities are not split, e.g. 4 parmis become two tasks of 2
+                        countDone -= orders[i].order_items[j].qty;
+                        orders[i].order_items[j].state = "done";
+                        if (countDone <= 0) break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 
 let chef = "awais";
+
+const noItem = {
+    "item": null,
+    "qty": 0
+}
 
 let orders = [{
 
