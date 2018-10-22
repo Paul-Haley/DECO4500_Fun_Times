@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("page loaded");
+    const socket = require("socket.io")("http://192.168.0.2:9000");
 
     // Setup Leap loop with frame callback function
-    const controllerOptions = {enableGestures: true};
+    const controllerOptions = { enableGestures: true };
     let previousSwipeDirection = "none";
 
     Leap.loop(controllerOptions, function(frame) {
@@ -62,15 +63,16 @@ function swiped(direction) {
     } else if (direction === "inwards") {
         // TODO: remove user item from in-progress
     }
+    io.emit('some event', { for: 'everyone' });
 }
+
 
 let chef = "awais";
 
-let orders = [
-    {
+let orders = [{
+
         "order_id": 1,
-        "order_items": [
-            {
+        "order_items": [{
                 "item": "salad",
                 "qty": 5,
                 "state": "todo"
@@ -84,8 +86,7 @@ let orders = [
     },
     {
         "order_id": 2,
-        "order_items": [
-            {
+        "order_items": [{
                 "item": "chips",
                 "qty": 5,
                 "state": "todo"
@@ -96,7 +97,8 @@ let orders = [
                 "state": "doing"
             }
         ]
-    }];
+    }
+];
 
 let kitchenState = {
     "todo": [],
@@ -121,7 +123,3 @@ let kitchenState = {
         }
     }
 };
-
-
-
-
