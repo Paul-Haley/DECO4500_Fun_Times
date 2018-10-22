@@ -98,7 +98,29 @@ function swiped(direction) {
         }
 
         let orderItem = kitchenState.doing[chef];
-        kitchenState.todo.push(orderItem);
+        kitchenState.todo.push(orderItem); // it is possible to make items out of order here, avoid
+
+        //Insertion sort based of dockets (ids) of each orderItem
+        // let priority = Number.MAX_SAFE_INTEGER; // find priority of item based off oldest docket
+        // for (let i = 0; i < orderItem.ids.length; i++) {
+        //     priority = Math.min(priority, orderItem.ids[i]);
+        // }
+        //
+        // console.log(priority);
+        // console.log(kitchenState.todo);
+        // if (kitchenState.todo.length > 0) {
+        //     // effectively an insertion sort on a sorted queue/array
+        //     for (let i = kitchenState.todo.length - 1; i >= 0; i--) {
+        //         for (let j = 0; j < kitchenState.todo[i].ids.length; j++) {
+        //             if (kitchenState.todo[i].ids[j] >= priority) {
+        //                 kitchenState.todo.splice(i + 1, 0, orderItem);
+        //             }
+        //         }
+        //     }
+        // } else { // special case with no items, trivially sorted
+        //     kitchenState.todo.push(orderItem);
+        // }
+
         kitchenState.doing[chef] = noItem;
         updateOrders(orderItem, "todo");
 
@@ -129,7 +151,7 @@ function swiped(direction) {
         //     }
         // }
     } else {
-        return; // skip render
+        return; // skip render for unknown gesture
     }
 
     render();
