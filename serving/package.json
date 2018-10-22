@@ -8,6 +8,7 @@
     "start": "electron ."
   },
   "dependencies": {
+    "request": "^2.88.0",
     "socket.io": "^2.1.1"
   }
 }
