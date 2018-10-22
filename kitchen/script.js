@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("page loaded");
+    const socket = require("socket.io")("http://192.168.0.2:9000");
 
     // Setup Leap loop with frame callback function
-    var controllerOptions = {enableGestures: true};
+    var controllerOptions = { enableGestures: true };
     var previousSwipeDirection = "none";
 
     Leap.loop(controllerOptions, function(frame) {
@@ -62,4 +63,5 @@ function swiped(direction) {
     } else if (direction === "inwards") {
         // TODO: remove user item from in-progress
     }
+    io.emit('some event', { for: 'everyone' });
 }
