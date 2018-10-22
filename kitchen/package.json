@@ -8,7 +8,6 @@
     "start": "electron ."
   },
   "dependencies": {
-    "socket.io": "^2.1.1",
-    "leapjs": "^0.6.3"
+    "socket.io": "^2.1.1"
   }
 }
