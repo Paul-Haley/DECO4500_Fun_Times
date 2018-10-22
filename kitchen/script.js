@@ -109,9 +109,6 @@ This method needs to be 'aware' of who the operator is so that it knows what ite
  */
 function swiped(direction) {
     if (direction === "right") { // Taking item
-        // TODO: check user has no items at this stage
-        //document.getElementById("doing").insertAdjacentElement("afterbegin", document.getElementById("todo").firstElementChild);
-
         if (kitchenState.doing[chef].item) {
             // TODO: already have item, remind them
             return;
@@ -125,9 +122,6 @@ function swiped(direction) {
         updateOrders(orderItem, "doing");
 
     } else if (direction === "left") { // Reject item/undo complete
-        // TODO: check user has item in progress
-        //document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("doing").firstElementChild);
-
         if (!kitchenState.doing[chef].item) {
             // TODO: don't have item, remind them
             return;
@@ -161,7 +155,6 @@ function swiped(direction) {
         updateOrders(orderItem, "todo");
 
     } else if (direction === "inward") { // complete doing item
-        // TODO: update display
         // TODO: error handling (undo hand action)
         if (!kitchenState.doing[chef].item) {
             // TODO: No doing item, remind them
@@ -195,10 +188,9 @@ function swiped(direction) {
 
 // Only updates the orders object, not kitchen state
 function updateOrders(orderItem, to) {
-    //for (let i in orderItem.ids) {
     for (let i = 0; i < orderItem.ids.length; i++) {
         const orderId = orderItem.ids[i] - 1;
-        for (let j in orders[orderId].order_items.length) { // MATLAB indexing
+        for (let j = 0; j < orders[orderId].order_items.length; j++) {// MATLAB indexing
             if (orders[orderId].order_items[j].item === orderItem.item) {
                 orders[orderId].order_items[j].state = to;
             }
