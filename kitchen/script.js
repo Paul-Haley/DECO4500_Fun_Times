@@ -2,8 +2,11 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("page loaded");
 
     document.getElementById("chef").onchange  = function() {
-        chef = document.getElementById("chef").valueOf();
+        chef = document.getElementById("chef").value;
+        console.log(chef);
     }
+
+    render();
 
     // setup the grid stack
     // $(function () {
@@ -71,35 +74,40 @@ This method needs to be 'aware' of who the operator is so that it knows what ite
 function swiped(direction) {
     if (direction === "right") { // Taking item
         // TODO: check user has no items at this stage
-        //document.getElementById("in-progress").insertAdjacentElement("afterbegin", document.getElementById("todo").firstElementChild);
+        //document.getElementById("doing").insertAdjacentElement("afterbegin", document.getElementById("todo").firstElementChild);
 
         if (kitchenState.doing[chef].item) {
             // TODO: already have item, remind them
+            return;
+        } else if (kitchenState.todo.length === 0) {
+            return;
         }
 
         // shift makes array function as queue in O(n) time
-        let orderItem = kitchenState.todo.shift();
+        let orderItem = kitchenState.todo.pop();
         kitchenState.doing[chef] = orderItem;
         updateOrders(orderItem, "doing");
 
     } else if (direction === "left") { // Reject item/undo complete
         // TODO: check user has item in progress
-        //document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("in-progress").firstElementChild);
+        //document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("doing").firstElementChild);
 
         if (!kitchenState.doing[chef].item) {
             // TODO: don't have item, remind them
+            return;
         }
 
         let orderItem = kitchenState.doing[chef];
-        kitchenState.todo.unshift(orderItem);
+        kitchenState.todo.push(orderItem);
         kitchenState.doing[chef] = noItem;
         updateOrders(orderItem, "todo");
 
-    } else if (direction === "inwards") { // complete doing item
+    } else if (direction === "inward") { // complete doing item
         // TODO: update display
         // TODO: error handling (undo hand action)
-        if (kitchenState.doing[chef].item) {
+        if (!kitchenState.doing[chef].item) {
             // TODO: No doing item, remind them
+            return;
         }
 
         //let countDone = kitchenState.doing[chef]
@@ -120,16 +128,40 @@ function swiped(direction) {
         //         }
         //     }
         // }
+    } else {
+        return; // skip render
     }
+
+    render();
 }
 
 // Only updates the orders object, not kitchen state
 function updateOrders(orderItem, to) {
-    for (let i in orderItem.ids) {
-        for (let j in orders[i - 1].order_items.length) { // MATLAB indexing
-            if (orders[i - 1].order_items[j].item === orderItem.item) {
-                orders[i - 1].order_items[j].state = to;
+    //for (let i in orderItem.ids) {
+    for (let i = 0; i < orderItem.ids.length; i++) {
+        const orderId = orderItem.ids[i] - 1;
+        for (let j in orders[orderId].order_items.length) { // MATLAB indexing
+            if (orders[orderId].order_items[j].item === orderItem.item) {
+                orders[orderId].order_items[j].state = to;
             }
+        }
+    }
+}
+
+// Updates both visible lists through a complete refresh
+function render() {
+    // clear, might be smoother to clear 1 by 1
+    document.getElementById("todo").innerHTML = "";
+    document.getElementById("doing").innerHTML = "";
+
+    //for (let i = kitchenState.todo.length - 1; i >= 0; i--) {
+    for (let i in kitchenState.todo) {
+        document.getElementById("todo").insertAdjacentHTML("afterbegin", "<li class='order-item'>" + kitchenState.todo[i].item + " X " + kitchenState.todo[i].qty + "</li>");
+    }
+
+    for (let i in kitchenState.doing) {
+        if (kitchenState.doing[i].item) {
+            document.getElementById("doing").insertAdjacentHTML("afterbegin", "<li class='order-item'>" + kitchenState.doing[i].item + " X " + kitchenState.doing[i].qty + "</li>");
         }
     }
 }
