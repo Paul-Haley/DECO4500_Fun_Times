@@ -1,0 +1,4 @@
+.idea/
+electron/code/node_modules/
+electron/code/package-lock.json
+

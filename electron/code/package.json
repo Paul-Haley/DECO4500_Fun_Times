@@ -1,0 +1,14 @@
+{
+  "name": "fun_times",
+  "version": "1.0.0",
+  "main": "./main.js",
+  "description": "Making diners faster",
+  "repository": "git@github.com:Paul-Haley/DECO4500_Fun_Times.git",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "socket.io": "^2.1.1",
+    "leapjs": "^0.6.3"
+  }
+}
