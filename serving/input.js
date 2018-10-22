@@ -1,12 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const socket = require('socket.io-client')('http://localhost:9000');
-    socket.on('connect', function() {
-        console.log("Connected")
-    });
-    socket.on('event', function(data) {
-        console.log("Event")
-    });
-    socket.on('disconnect', function() {
-        console.log("Disconnected")
-    });
-})
+    const request = require('request');
+
+    setInterval(function() {
+        request('http://192.168.0.3/', (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+                console.log(body);
+            } else {
+                console.log("I am broke");
+            }
+        });
+    }, 5000);
+});
