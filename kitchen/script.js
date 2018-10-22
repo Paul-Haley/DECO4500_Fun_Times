@@ -64,6 +64,8 @@ function swiped(direction) {
     }
 }
 
+let chef = "awais";
+
 let orders = [
     {
         "order_id": 1,
