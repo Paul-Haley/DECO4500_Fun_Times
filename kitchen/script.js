@@ -66,7 +66,11 @@ function swiped(direction) {
     io.emit('some event', { for: 'everyone' });
 }
 
+
+let chef = "awais";
+
 let orders = [{
+
         "order_id": 1,
         "order_items": [{
                 "item": "salad",
