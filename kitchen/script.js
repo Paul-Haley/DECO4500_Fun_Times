@@ -14,11 +14,47 @@ document.addEventListener("DOMContentLoaded", function() {
     // });
 
     // Express HTTP Server
-    const express = require('express')();
+    const express = require('express');
+    const app = express();
+    app.use(express.json());
+
     const port = 80;
-    express.listen(port);
+    app.listen(port);
+
     // send all orders
-    express.get('/', (req, res) => res.json(orders));
+    app.get('/', (req, res) => res.json(orders));
+
+    // Accept new orders
+    app.post('/ordering', (req, res) => {
+        let newOrder = req.body;
+        for (let i = 0; i < newOrder.order_items.length; i++) {
+            newOrder.order_items[i].state = "todo";
+        }
+
+        // Append new order to orders object
+        newOrder.order_id = nextOrderId++;
+        orders.push(newOrder);
+
+        // Update the kitchen status (new todos, merge existing)
+        for (let i = 0; i < newOrder.order_items.length; i++) {
+            let combo = false;
+            for (let j = 0; j < kitchenState.todo.length && newOrder.order_id - kitchenState.todo[j].ids[0] <= 1; j++) { //This 1 is how many dockets to look ahead.
+                if (kitchenState.todo[j].item === newOrder.order_items[i].item) {
+                    combo = true;
+                    kitchenState.todo[j].qty += newOrder.order_items[i].qty;
+                    kitchenState.todo[j].ids.push(newOrder.order_id);
+                    break;
+                }
+            }
+            if (!combo) {
+                kitchenState.todo.unshift(newOrder.order_items[i]);
+                kitchenState.todo[0].ids = [newOrder.order_id];
+            }
+        }
+
+        render();
+        res.send("Yummy!");
+    });
 
     // Setup Leap loop with frame callback function
     const controllerOptions = { enableGestures: true };
@@ -187,6 +223,8 @@ function render() {
         }
     }
 }
+
+let nextOrderId = 3;
 
 // Awais is our primary chef, Ben can join in too! Fun Times!
 let chef = "awais";
