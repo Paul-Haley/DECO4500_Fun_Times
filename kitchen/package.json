@@ -1,5 +1,5 @@
 {
-  "name": "fun_times_serving_system",
+  "name": "fun_times_kitchen",
   "version": "1.0.0",
   "main": "./main.js",
   "description": "Making diners faster",
@@ -8,6 +8,7 @@
     "start": "electron ."
   },
   "dependencies": {
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "leapjs": "^0.6.3"
   }
 }
