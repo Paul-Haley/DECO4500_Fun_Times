@@ -167,8 +167,10 @@ function swiped(direction) {
         kitchenState.doing[chef] = noItem;
         updateOrders(orderItem, "done");
 
-        // let i = 0;
-        // while (countDone > 0 && i < orders.length) {
+
+
+        // let i = orders.length - 1;
+        // while (countDone > 0 && i >= 0) {
         //     for (let j = 0; i < orders[i].order_items.length; ++i) {
         //         if (orders[i].order_items[j].state === "doing" && orders[i].order_items[j].item === kitchenState.done[chef].item) {
         //             // item in progress found and adjusting quantity
@@ -269,7 +271,7 @@ let kitchenState = {
     ],
     "doing": {
         "awais": {
-            "item": "steaks",
+            "item": "steak",
             "qty": 5,
             "ids": [1,2]
         },
