@@ -104,10 +104,19 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+let lastGestureTime = new Date();
+
 /*
 This method needs to be 'aware' of who the operator is so that it knows what item they have
  */
 function swiped(direction) {
+    const now = new Date();
+    if (now - lastGestureTime > 500) {
+        lastGestureTime = now;
+    } else { //bouncing...
+        return;
+    }
+
     if (direction === "right") { // Taking item
         if (kitchenState.doing[chef].item) {
             // TODO: already have item, remind them
