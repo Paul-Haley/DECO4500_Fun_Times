@@ -1,14 +1,15 @@
 {
-  "name": "fun_times_serving_system",
-  "version": "1.0.0",
-  "main": "./main.js",
-  "description": "Making diners faster",
-  "repository": "git@github.com:Paul-Haley/DECO4500_Fun_Times.git",
-  "scripts": {
-    "start": "electron ."
-  },
-  "dependencies": {
-    "request": "^2.88.0",
-    "socket.io": "^2.1.1"
-  }
+    "name": "fun_times_serving_system",
+    "version": "1.0.0",
+    "main": "./main.js",
+    "description": "Making diners faster",
+    "repository": "git@github.com:Paul-Haley/DECO4500_Fun_Times.git",
+    "scripts": {
+        "start": "electron ."
+    },
+    "dependencies": {
+        "request": "^2.88.0",
+        "socket.io": "^2.1.1",
+        "lodash": "^4.17.11"
+    }
 }

@@ -5,15 +5,27 @@
     <meta charset="UTF-8">
     <title>DECO4500 Demo</title>
 
-    <!-- <link rel="stylesheet" href="css/clock.css" type="text/css" /> -->
+    <link rel="stylesheet" href="main.css" type="text/css" />
 </head>
 
 <body>
-    <form>
+    <div id="order-left" class="order">
+        <h2>Order #<span id="order-left-number" class="order-left"></span></h2>
+        <div class="order-left">
+            <ul id="order-left-items"></ul>
+        </div>
+    </div>
+    <div id="order-right" class="order">
+        <h2>Order #<span id="order-right-number" class="order-right"></span></h2>
+        <div class="order-right">
+            <ul id="order-right-items"></ul>
+        </div>
+    </div>
+    <!-- <form>
         <label for="message">A message:</label>
         <input id="message" size="100" />
         <button id="apply" type="button">Send</button>
-    </form>
+    </form> -->
     <script src="input.js"></script>
 </body>
 
