@@ -250,8 +250,8 @@ let orders = [{
 
         "order_id": 1,
         "order_items": [{
-                "item": "salad",
-                "qty": 5,
+                "item": "pie",
+                "qty": 1,
                 "state": "done"
             },
             {
@@ -264,8 +264,8 @@ let orders = [{
     {
         "order_id": 2,
         "order_items": [{
-                "item": "chips",
-                "qty": 4,
+                "item": "barra sandwich",
+                "qty": 1,
                 "state": "todo"
             },
             {
@@ -280,8 +280,8 @@ let orders = [{
 let kitchenState = {
     "todo": [
         {
-            "item": "chips",
-            "qty": 4,
+            "item": "barra sandwich",
+            "qty": 1,
             "ids": [2]
         }
     ],
@@ -304,8 +304,8 @@ let kitchenState = {
             "ids": []
         },
         "ben": {
-            "item": "salad",
-            "qty": 5,
+            "item": "pie",
+            "qty": 1,
             "ids": [1]
         }
     }
