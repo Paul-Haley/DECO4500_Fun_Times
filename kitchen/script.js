@@ -131,13 +131,21 @@ function swiped(direction) {
         updateOrders(orderItem, "doing");
 
     } else if (direction === "left") { // Reject item/undo complete
-        if (!kitchenState.doing[chef].item) {
+        if (kitchenState.doing[chef].item) {
+            let orderItem = kitchenState.doing[chef];
+            kitchenState.todo.push(orderItem); // it is possible to make items out of order here, avoid
+            kitchenState.doing[chef] = noItem;
+            updateOrders(orderItem, "todo");
+        } else if (kitchenState.done[chef].item) {
+            let orderItem = kitchenState.done[chef];
+            kitchenState.doing[chef] = orderItem; // it is possible to make items out of order here, avoid
+            kitchenState.done[chef] = noItem;
+            updateOrders(orderItem, "doing");
+        } else {
             // TODO: don't have item, remind them
-            return;
         }
 
-        let orderItem = kitchenState.doing[chef];
-        kitchenState.todo.push(orderItem); // it is possible to make items out of order here, avoid
+
 
         //Insertion sort based of dockets (ids) of each orderItem
         // let priority = Number.MAX_SAFE_INTEGER; // find priority of item based off oldest docket
@@ -160,8 +168,7 @@ function swiped(direction) {
         //     kitchenState.todo.push(orderItem);
         // }
 
-        kitchenState.doing[chef] = noItem;
-        updateOrders(orderItem, "todo");
+
 
     } else if (direction === "inward") { // complete doing item
         // TODO: error handling (undo hand action)
