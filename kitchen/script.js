@@ -14,11 +14,47 @@ document.addEventListener("DOMContentLoaded", function() {
     // });
 
     // Express HTTP Server
-    const express = require('express')();
+    const express = require('express');
+    const app = express();
+    app.use(express.json());
+
     const port = 80;
-    express.listen(port);
+    app.listen(port);
+
     // send all orders
-    express.get('/', (req, res) => res.json(orders));
+    app.get('/', (req, res) => res.json(orders));
+
+    // Accept new orders
+    app.post('/ordering', (req, res) => {
+        let newOrder = req.body;
+        for (let i = 0; i < newOrder.order_items.length; i++) {
+            newOrder.order_items[i].state = "todo";
+        }
+
+        // Append new order to orders object
+        newOrder.order_id = nextOrderId++;
+        orders.push(newOrder);
+
+        // Update the kitchen status (new todos, merge existing)
+        for (let i = 0; i < newOrder.order_items.length; i++) {
+            let combo = false;
+            for (let j = 0; j < kitchenState.todo.length && newOrder.order_id - kitchenState.todo[j].ids[0] <= 1; j++) { //This 1 is how many dockets to look ahead.
+                if (kitchenState.todo[j].item === newOrder.order_items[i].item) {
+                    combo = true;
+                    kitchenState.todo[j].qty += newOrder.order_items[i].qty;
+                    kitchenState.todo[j].ids.push(newOrder.order_id);
+                    break;
+                }
+            }
+            if (!combo) {
+                kitchenState.todo.unshift(newOrder.order_items[i]);
+                kitchenState.todo[0].ids = [newOrder.order_id];
+            }
+        }
+
+        render();
+        res.send("Yummy!");
+    });
 
     // Setup Leap loop with frame callback function
     const controllerOptions = { enableGestures: true };
@@ -68,14 +104,20 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+let lastGestureTime = new Date();
+
 /*
 This method needs to be 'aware' of who the operator is so that it knows what item they have
  */
 function swiped(direction) {
-    if (direction === "right") { // Taking item
-        // TODO: check user has no items at this stage
-        //document.getElementById("doing").insertAdjacentElement("afterbegin", document.getElementById("todo").firstElementChild);
+    const now = new Date();
+    if (now - lastGestureTime > 500) {
+        lastGestureTime = now;
+    } else { //bouncing...
+        return;
+    }
 
+    if (direction === "right") { // Taking item
         if (kitchenState.doing[chef].item) {
             // TODO: already have item, remind them
             return;
@@ -89,16 +131,21 @@ function swiped(direction) {
         updateOrders(orderItem, "doing");
 
     } else if (direction === "left") { // Reject item/undo complete
-        // TODO: check user has item in progress
-        //document.getElementById("todo").insertAdjacentElement("afterbegin", document.getElementById("doing").firstElementChild);
-
-        if (!kitchenState.doing[chef].item) {
+        if (kitchenState.doing[chef].item) {
+            let orderItem = kitchenState.doing[chef];
+            kitchenState.todo.push(orderItem); // it is possible to make items out of order here, avoid
+            kitchenState.doing[chef] = noItem;
+            updateOrders(orderItem, "todo");
+        } else if (kitchenState.done[chef].item) {
+            let orderItem = kitchenState.done[chef];
+            kitchenState.doing[chef] = orderItem; // it is possible to make items out of order here, avoid
+            kitchenState.done[chef] = noItem;
+            updateOrders(orderItem, "doing");
+        } else {
             // TODO: don't have item, remind them
-            return;
         }
 
-        let orderItem = kitchenState.doing[chef];
-        kitchenState.todo.push(orderItem); // it is possible to make items out of order here, avoid
+
 
         //Insertion sort based of dockets (ids) of each orderItem
         // let priority = Number.MAX_SAFE_INTEGER; // find priority of item based off oldest docket
@@ -121,11 +168,9 @@ function swiped(direction) {
         //     kitchenState.todo.push(orderItem);
         // }
 
-        kitchenState.doing[chef] = noItem;
-        updateOrders(orderItem, "todo");
+
 
     } else if (direction === "inward") { // complete doing item
-        // TODO: update display
         // TODO: error handling (undo hand action)
         if (!kitchenState.doing[chef].item) {
             // TODO: No doing item, remind them
@@ -138,8 +183,10 @@ function swiped(direction) {
         kitchenState.doing[chef] = noItem;
         updateOrders(orderItem, "done");
 
-        // let i = 0;
-        // while (countDone > 0 && i < orders.length) {
+
+
+        // let i = orders.length - 1;
+        // while (countDone > 0 && i >= 0) {
         //     for (let j = 0; i < orders[i].order_items.length; ++i) {
         //         if (orders[i].order_items[j].state === "doing" && orders[i].order_items[j].item === kitchenState.done[chef].item) {
         //             // item in progress found and adjusting quantity
@@ -159,10 +206,9 @@ function swiped(direction) {
 
 // Only updates the orders object, not kitchen state
 function updateOrders(orderItem, to) {
-    //for (let i in orderItem.ids) {
     for (let i = 0; i < orderItem.ids.length; i++) {
         const orderId = orderItem.ids[i] - 1;
-        for (let j in orders[orderId].order_items.length) { // MATLAB indexing
+        for (let j = 0; j < orders[orderId].order_items.length; j++) {// MATLAB indexing
             if (orders[orderId].order_items[j].item === orderItem.item) {
                 orders[orderId].order_items[j].state = to;
             }
@@ -183,10 +229,12 @@ function render() {
 
     for (let i in kitchenState.doing) {
         if (kitchenState.doing[i].item) {
-            document.getElementById("doing").insertAdjacentHTML("afterbegin", "<li class='order-item'>" + kitchenState.doing[i].item + " X " + kitchenState.doing[i].qty + "</li>");
+            document.getElementById("doing").insertAdjacentHTML("afterbegin", "<li class='order-item'>" + kitchenState.doing[i].item + " X " + kitchenState.doing[i].qty + "<ul><li>" + i + "</li></ul></li>");
         }
     }
 }
+
+let nextOrderId = 3;
 
 // Awais is our primary chef, Ben can join in too! Fun Times!
 let chef = "awais";
@@ -239,7 +287,7 @@ let kitchenState = {
     ],
     "doing": {
         "awais": {
-            "item": "steaks",
+            "item": "steak",
             "qty": 5,
             "ids": [1,2]
         },

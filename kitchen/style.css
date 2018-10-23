@@ -52,3 +52,9 @@ header nav select {
     margin: 0.4em;
     font-size: 2em;
 }
+
+.order-item li {
+    font-size: 0.75em;
+    text-transform: capitalize;
+}
+
