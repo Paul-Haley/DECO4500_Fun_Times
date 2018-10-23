@@ -1,0 +1,34 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+h2 {
+    text-align: center;
+}
+
+li {
+    font-size: 2em;
+}
+
+.order {
+    width: 45%;
+    height: 80%;
+    border: 0.2em solid black;
+}
+
+#order-left {
+    float: left;
+}
+
+#order-right {
+    float: right;
+}
+
+
+/* .order-left {
+    text-align: center;
+}
+
+.order-right {
+    text-align: center;
+} */
