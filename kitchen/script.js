@@ -56,6 +56,24 @@ document.addEventListener("DOMContentLoaded", function() {
         res.send("Yummy!");
     });
 
+    window.onkeydown = function(e) {
+       switch(e.key) {
+           case "ArrowLeft":
+               swiped("left");
+               break;
+           case "ArrowRight":
+               swiped("right");
+               break;
+           case "ArrowUp":
+               swiped("inward");
+               break;
+       }
+    };
+
+    // document.onkeydown(event => {
+    //     console.log("memes");
+    // });
+
     // Setup Leap loop with frame callback function
     const controllerOptions = { enableGestures: true };
     let previousSwipeDirection = "none";
