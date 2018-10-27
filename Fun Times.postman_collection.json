@@ -1,0 +1,86 @@
+{
+	"info": {
+		"name": "Fun Times",
+		"_postman_id": "2a931396-1d41-7599-a564-87498bafc929",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "seafood order 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"order_items\": [{\n\t\t\"item\": \"barra sandwich\",\n\t\t\"qty\": 2\n\t},\n\t{\n\t\t\"item\": \"seafood platter\",\n\t\t\"qty\": 1\n\t}]\n}"
+				},
+				"url": {
+					"raw": "http://localhost/ordering",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"ordering"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "family dinner",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"order_items\": [{\n\t\t\"item\": \"parmi\",\n\t\t\"qty\": 1\n\t},\n\t{\n\t\t\"item\": \"steak\",\n\t\t\"qty\": 2\n\t},\n\t{\n\t\t\"item\": \"pie\",\n\t\t\"qty\": 1\n\t},\n\t{\n\t\t\"item\": \"chips\",\n\t\t\"qty\": 1\n\t}]\n}"
+				},
+				"url": {
+					"raw": "http://localhost/ordering",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"ordering"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

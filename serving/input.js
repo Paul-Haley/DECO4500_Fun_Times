@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // reloadPage();
     setInterval(function() {
-        request('http://192.168.0.2/', (error, response, body) => {
+        request('http://192.168.0.9/', (error, response, body) => {
             if (!error && response.statusCode === 200) {
                 document.getElementById('order-right-items').innerHTML = '';
                 document.getElementById('order-left-items').innerHTML = '';
